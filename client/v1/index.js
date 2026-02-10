@@ -28,7 +28,9 @@ console.log(MY_FAVORITE_DEALERS[0]);
 // 🎯 TODO 1: The highest reduction
 // 0. I have 2 favorite lego sets shopping communities stored in MY_FAVORITE_DEALERS variable
 // 1. Create a new variable and assign it the link of the lego set with the highest reduction I can find on these 2 websites
+const highestReductionLegoLink = 'https://www.avenuedelabrique.com/lego-super-mario/surprise-de-super-champignon-polybag-30385/p1213';
 // 2. Log the variable
+console.log('Link to the highest reduction found:', highestReductionLegoLink);
 
 /**
  * 🧱
