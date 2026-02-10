@@ -28,8 +28,10 @@ console.log(MY_FAVORITE_DEALERS[0]);
 // 🎯 TODO 1: The highest reduction
 // 0. I have 2 favorite lego sets shopping communities stored in MY_FAVORITE_DEALERS variable
 // 1. Create a new variable and assign it the link of the lego set with the highest reduction I can find on these 2 websites
-const highestReductionLegoLink = 'https://www.avenuedelabrique.com/lego-super-mario/surprise-de-super-champignon-polybag-30385/p1213';
+const highestReductionLegoLink = 'https://www.dealabs.com/bons-plans/lego-les-indestructibles-sur-nintendo-switch-12-dematerialise-3267939';
 // 2. Log the variable
+console.log('Link to the highest reduction found:', highestReductionLegoLink);
+console.log('TODO 1');
 console.log('Link to the highest reduction found:', highestReductionLegoLink);
 
 /**
@@ -47,26 +49,28 @@ const totalDeals = deals.length;
 // 2. Log the variable
 console.log('TODO 2');
 console.log('Total number of deals:', totalDeals);
+console.log('TODO 2');
+console.log('Total number of deals:', totalDeals);
 
 // 🎯 TODO 3: Website name
 // 1. Create a variable and assign it the list of shopping community name only
-const communityNames = [];
-
-for (const dealer of MY_FAVORITE_DEALERS) {
-  communityNames.push(dealer.name);
-}
+const communityNames = MY_FAVORITE_DEALERS.map(dealer => dealer.name);
 // 2. Log the variable
 console.log('TODO 3');
-console.log(communityNames);
+console.log('Community names:', communityNames);
 // 3. Log how many shopping communities we have
-console.log(communityNames.length);
+console.log('Number of communities:', communityNames.length);
 
 // 🎯 TODO 4: Sort by price
 // 1. Create a function to sort the deals by price
 const sortByPrice = (data) => {
   return [...data].sort((a, b) => a.price - b.price);
 };
+const sortByPrice = (data) => {
+  return [...data].sort((a, b) => a.price - b.price);
+};
 // 2. Create a variable and assign it the list of sets by price from lowest to highest
+const sortedDealsByPrice = sortByPrice(deals);
 const sortedDealsByPrice = sortByPrice(deals);
 // 3. Log the variable
 console.log('TODO 4');
