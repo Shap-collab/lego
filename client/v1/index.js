@@ -567,7 +567,16 @@ let camera = sealedCamera;
 camera.favorite = true;
 
 // 1. Log `sealedCamera` and `camera` variables
+console.log('TODO 15');
+console.log('sealedCamera:', sealedCamera);
+console.log('camera:', camera);
+
 // 2. What do you notice?
+// Answer: You will see that BOTH objects have 'favorite: true'.
+// Why? Because in JavaScript, objects are passed by reference, not by value.
+// When you wrote 'let camera = sealedCamera', you didn't create a copy.
+// You just created a new name pointing to the exact same object in memory.
+// Modifying one modifies the other.
 
 // we make (again) a new assignment again
 sealedCamera = {
@@ -580,6 +589,14 @@ sealedCamera = {
 
 // 3. Update `camera` property with `favorite` to true WITHOUT changing sealedCamera properties
 
+// We create a NEW object `{}`.
+// We copy inside it all properties of sealedCamera `...sealedCamera`
+// We add the new property `favorite: true`
+camera = { ...sealedCamera, favorite: true };
+
+console.log('After Fix');
+console.log('sealedCamera:', sealedCamera.favorite);
+console.log('camera:', camera.favorite);
 
 // 🎯 TODO 16: Compute the profitability
 // From a specific deal called `deal`
