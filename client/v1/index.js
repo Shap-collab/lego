@@ -586,7 +586,6 @@ sealedCamera = {
   published: "Thu, 26 Dec 2024 21:18:04 GMT",
   uuid: "18751705-536e-5c1f-9a9d-383a3a629df5"
 };
-
 // 3. Update `camera` property with `favorite` to true WITHOUT changing sealedCamera properties
 
 // We create a NEW object `{}`.
@@ -619,8 +618,6 @@ const profit = maxVintedPrice - deal.price;
 console.log('TODO 16');
 console.log('Highest Vinted Price found:', maxVintedPrice);
 console.log('Potential Highest Profitability:', profit.toFixed(2));
-
-
 
 /**
  * 🎬
