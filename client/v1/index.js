@@ -658,8 +658,6 @@ console.log('TODO 16');
 console.log('Highest Vinted Price found:', maxVintedPrice);
 console.log('Potential Highest Profitability:', profit.toFixed(2));
 
-
-
 /**
  * 🎬
  * The End: last thing to do
