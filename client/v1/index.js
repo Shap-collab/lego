@@ -54,12 +54,16 @@ console.log('Total number of deals:', totalDeals);
 
 // 🎯 TODO 3: Website name
 // 1. Create a variable and assign it the list of shopping community name only
-const communityNames = MY_FAVORITE_DEALERS.map(dealer => dealer.name);
+const communityNames = [];
+
+for (const dealer of MY_FAVORITE_DEALERS) {
+  communityNames.push(dealer.name);
+}
 // 2. Log the variable
 console.log('TODO 3');
-console.log('Community names:', communityNames);
+console.log(communityNames);
 // 3. Log how many shopping communities we have
-console.log('Number of communities:', communityNames.length);
+console.log(communityNames.length);
 
 // 🎯 TODO 4: Sort by price
 // 1. Create a function to sort the deals by price
