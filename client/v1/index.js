@@ -98,7 +98,10 @@ console.log('Deals sorted by date:', sortedDealsByDate);
 
 // 🎯 TODO 6: Filter a specific percentage discount range
 // 1. Filter the list of deals between 50% and 75%
+const highDiscountDeals = deals.filter(deal => deal.discount >= 50 && deal.discount <= 75);
 // 2. Log the list
+console.log('TODO 6');
+console.log('Deals with discount between 50% and 75%:', highDiscountDeals);
 
 // 🎯 TODO 7: Average percentage discount
 // 1. Determine the average percentage discount of the deals
