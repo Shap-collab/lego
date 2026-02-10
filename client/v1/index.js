@@ -630,11 +630,21 @@ console.log('camera:', camera.favorite);
 // From a specific deal called `deal`
 const deal = {
   'title': 'La caméra Hommage à Walt Disney',
+  'title': 'La caméra Hommage à Walt Disney',
   'retail': 75.98,
   'price': 56.98,
   'legoId': '43230'
 };
+};
 // 1. Compute the potential highest profitability based on the VINTED items
+let maxVintedPrice = 0;
+for (const item of VINTED) {
+  const currentPrice = Number(item.price);
+  if (currentPrice > maxVintedPrice) {
+    maxVintedPrice = currentPrice;
+  }
+}
+const profit = maxVintedPrice - deal.price;
 let maxVintedPrice = 0;
 for (const item of VINTED) {
   const currentPrice = Number(item.price);
@@ -647,6 +657,8 @@ const profit = maxVintedPrice - deal.price;
 console.log('TODO 16');
 console.log('Highest Vinted Price found:', maxVintedPrice);
 console.log('Potential Highest Profitability:', profit.toFixed(2));
+
+
 
 /**
  * 🎬
