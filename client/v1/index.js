@@ -591,7 +591,16 @@ console.log('TODO 15');
 console.log('sealedCamera:', sealedCamera);
 console.log('camera:', camera);
 
+console.log('TODO 15');
+console.log('sealedCamera:', sealedCamera);
+console.log('camera:', camera);
+
 // 2. What do you notice?
+// Answer: You will see that BOTH objects have 'favorite: true'.
+// Why? Because in JavaScript, objects are passed by reference, not by value.
+// When you wrote 'let camera = sealedCamera', you didn't create a copy.
+// You just created a new name pointing to the exact same object in memory.
+// Modifying one modifies the other.
 // Answer: You will see that BOTH objects have 'favorite: true'.
 // Why? Because in JavaScript, objects are passed by reference, not by value.
 // When you wrote 'let camera = sealedCamera', you didn't create a copy.
@@ -617,7 +626,6 @@ console.log('After Fix');
 console.log('sealedCamera:', sealedCamera.favorite);
 console.log('camera:', camera.favorite);
 
-// 🎯 TODO 16: Compute the profitability
 // 🎯 TODO 16: Compute the profitability
 // From a specific deal called `deal`
 const deal = {
