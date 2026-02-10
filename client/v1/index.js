@@ -71,8 +71,30 @@ console.log('Deals sorted by price:', sortedDealsByPrice);
 
 // 🎯 TODO 5: Sort by date
 // 1. Create a function to sort the deals by date
+const sortByDate = (data) => {
+  return [...data].sort((a, b) => {
+    // Helper to convert date to milliseconds
+    const getTimestamp = (date) => {
+      // If it's a number, it's a Unix timestamp in seconds, convert to ms
+      if (typeof date === 'number') {
+        return date * 1000;
+      }
+      // If it's a string, parse it into a Date object
+      return new Date(date).getTime();
+    };
+
+    const dateA = getTimestamp(a.published);
+    const dateB = getTimestamp(b.published);
+
+    // Sort from recent to old (descending order)
+    return dateB - dateA;
+  });
+};
 // 2. Create a variable and assign it the list of deals by date from recent to old
+const sortedDealsByDate = sortByDate(deals);
 // 3. Log the variable
+console.log('TODO 5');
+console.log('Deals sorted by date:', sortedDealsByDate);
 
 // 🎯 TODO 6: Filter a specific percentage discount range
 // 1. Filter the list of deals between 50% and 75%
