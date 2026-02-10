@@ -533,9 +533,24 @@ console.log('Found item:', foundItem);
 
 // 🎯 TODO 14: Delete a specific item
 // 1. Delete the item with the uuid `f2c5377c-84f9-571d-8712-98902dcbb913`
+console.log('TODO 14');
+const targetUuidToDelete = 'f2c5377c-84f9-571d-8712-98902dcbb913';
+let indexToDelete = -1;
+for (let i = 0; i < VINTED.length; i++) {
+  if (VINTED[i].uuid === targetUuidToDelete) {
+    indexToDelete = i;
+    console.log(VINTED[indexToDelete]);
+    break;
+  }
+}
+if (indexToDelete !== -1) {
+  VINTED.splice(indexToDelete, 1);
+}
 // 2. Log the new list of items
+console.log('This item has been deleted. Remaining items:', VINTED.length);
+console.log(VINTED);
 
-// 🎯 TODO 5: Save a favorite item
+// 🎯 TODO 15: Save a favorite item
 // We declare and assign a variable called `sealedCamera`
 let sealedCamera = {
   link: "https://www.vinted.fr/items/5563396347-lego-43230-omaggio-a-walter-disney-misb",
@@ -566,7 +581,7 @@ sealedCamera = {
 // 3. Update `camera` property with `favorite` to true WITHOUT changing sealedCamera properties
 
 
-// 🎯 TODO 11: Compute the profitability
+// 🎯 TODO 16: Compute the profitability
 // From a specific deal called `deal`
 const deal = {
   'title':  'La caméra Hommage à Walt Disney',
