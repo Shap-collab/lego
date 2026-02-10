@@ -51,12 +51,16 @@ console.log('Total number of deals:', totalDeals);
 
 // 🎯 TODO 3: Website name
 // 1. Create a variable and assign it the list of shopping community name only
-const communityNames = MY_FAVORITE_DEALERS.map(dealer => dealer.name);
+const communityNames = [];
+
+for (const dealer of MY_FAVORITE_DEALERS) {
+  communityNames.push(dealer.name);
+}
 // 2. Log the variable
 console.log('TODO 3');
-console.log('Community names:', communityNames);
+console.log(communityNames);
 // 3. Log how many shopping communities we have
-console.log('Number of communities:', communityNames.length);
+console.log(communityNames.length);
 
 // 🎯 TODO 4: Sort by price
 // 1. Create a function to sort the deals by price
@@ -458,6 +462,41 @@ const VINTED = [
 // 2. Compute the p5 price value of the listing
 // 3. Compute the p25 price value of the listing
 // The p25 value (25th percentile) is the lower value expected to be exceeded in 25% of the vinted items
+
+// 1. Create a list of prices as numbers
+// We start with an empty list
+const prices = [];
+// We loop through each item in VINTED
+for (const item of VINTED) {
+  // We convert the string "48.99" to a number 48.99
+  const priceAsNumber = Number(item.price);
+  // We add it to our list
+  prices.push(priceAsNumber);
+}
+// 2. Sort the prices (Smallest to Largest)
+// Javascript needs this formula (a - b) to sort numbers correctly
+prices.sort((a, b) => a - b);
+// 3. Calculate Average
+// Average = Total Sum / Number of items
+let sum = 0;
+for (const price of prices) {
+  sum = sum + price;
+}
+const average = sum / prices.length;
+// 4. Calculate P5 and P25
+// P5 means: "The price at 5% of the list"
+// We calculate the position (index) in the list
+// Math.floor rounds down to the nearest whole number (e.g., 1.9 becomes 1)
+const p5Index = Math.floor(prices.length * 0.05);
+const p5 = prices[p5Index];
+// P25 means: "The price at 25% of the list"
+const p25Index = Math.floor(prices.length * 0.25);
+const p25 = prices[p25Index];
+// 5. Log the results
+console.log('TODO 11');
+console.log('Average Price:', average);
+console.log('P5 Price:', p5);
+console.log('P25 Price:', p25);
 
 // 🎯 TODO 12: Very old listed items
 // // 1. Log if we have very old items (true or false)
