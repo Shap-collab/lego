@@ -43,7 +43,9 @@ console.log('TODO 1 Link to the highest reduction found:', highestReductionLegoL
 
 // 🎯 TODO 2: Number of deals
 // 1. Create a variable and assign it the number of deals
+const totalDeals = deals.length;
 // 2. Log the variable
+console.log('TODO 2 Total number of deals:', totalDeals);
 
 // 🎯 TODO 3: Website name
 // 1. Create a variable and assign it the list of shopping community name only
