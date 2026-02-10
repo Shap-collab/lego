@@ -553,6 +553,19 @@ for (let i = 0; i < VINTED.length; i++) {
 if (indexToDelete !== -1) {
   VINTED.splice(indexToDelete, 1);
 }
+console.log('TODO 14');
+const targetUuidToDelete = 'f2c5377c-84f9-571d-8712-98902dcbb913';
+let indexToDelete = -1;
+for (let i = 0; i < VINTED.length; i++) {
+  if (VINTED[i].uuid === targetUuidToDelete) {
+    indexToDelete = i;
+    console.log(VINTED[indexToDelete]);
+    break;
+  }
+}
+if (indexToDelete !== -1) {
+  VINTED.splice(indexToDelete, 1);
+}
 // 2. Log the new list of items
 console.log('This item has been deleted. Remaining items:', VINTED.length);
 console.log(VINTED);
@@ -604,6 +617,7 @@ console.log('After Fix');
 console.log('sealedCamera:', sealedCamera.favorite);
 console.log('camera:', camera.favorite);
 
+// 🎯 TODO 16: Compute the profitability
 // 🎯 TODO 16: Compute the profitability
 // From a specific deal called `deal`
 const deal = {
