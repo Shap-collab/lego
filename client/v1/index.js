@@ -140,7 +140,13 @@ Object.keys(communities).forEach(community => {
 
 // 🎯 TODO 9: Sort by price for each community
 // 1. For each community, sort the deals by discount price, from highest to lowest
+for (const community in communities) {
+  // Sort in-place: b.price - a.price for descending order
+  communities[community].sort((a, b) => b.price - a.price);
+}
 // 2. Log the sort
+console.log('TODO 9');
+console.log('Communities sorted by price (descending):', communities);
 
 // 🎯 TODO 10: Sort by date for each community
 // 1. For each set, sort the deals by date, from old to recent
