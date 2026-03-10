@@ -32,8 +32,32 @@ async function scrapeVinted (lego) {
   }
 }
 
+/* eslint-disable no-console, no-process-exit */
+import * as dealabs from './websites/dealabs.js';
+import fs from 'fs'; // Pour l'écriture de fichier
+
+async function scrapeDealabs(url = 'https://www.dealabs.com/groupe/lego') {
+  try {
+    console.log(`🕵️‍♀️  Browsing Dealabs: ${url}`);
+
+    const deals = await dealabs.scrape(url);
+
+    console.log(`✅ Found ${deals.length} deals.`);
+
+    // Étape : Stocker la liste dans un fichier JSON
+    fs.writeFileSync('deals.json', JSON.stringify(deals, null, 2));
+    console.log('💾 Data saved to deals.json');
+
+    process.exit(0);
+  } catch (e) {
+    console.error('❌ Error:', e);
+    process.exit(1);
+  }
+}
+
 
 const [,, param] = process.argv;
 
-scrapeADLB(param);
+//scrapeADLB(param);
 //scrapeVinted(param)
+scrapeDealabs(param);
