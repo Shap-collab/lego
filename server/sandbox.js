@@ -1,6 +1,7 @@
 /* eslint-disable no-console, no-process-exit */
 import * as avenuedelabrique from './websites/avenuedelabrique.js';
 import * as vinted from './websites/vinted.js';
+import * as dealabs from './websites/dealabs.js';
 
 async function scrapeADLB (website = 'https://www.avenuedelabrique.com/promotions-et-bons-plans-lego') {
   try {
@@ -17,13 +18,13 @@ async function scrapeADLB (website = 'https://www.avenuedelabrique.com/promotion
   }
 }
 
-async function scrapeVinted (lego) {
+async function scrapeDealabs (url = 'https://www.dealabs.com/groupe/lego') {
   try {
-    console.log(`🕵️‍♀️  scraping lego ${lego} from vinted.fr`);
+    console.log(`🕵️‍♀️  browsing ${url} website`);
 
-    const sales = await vinted.scrape(lego);
+    const deals = await dealabs.scrape(url);
 
-    console.log(sales);
+    console.log(JSON.stringify(deals, null, 2)); // Pretty print the result
     console.log('done');
     process.exit(0);
   } catch (e) {
@@ -32,32 +33,8 @@ async function scrapeVinted (lego) {
   }
 }
 
-/* eslint-disable no-console, no-process-exit */
-import * as dealabs from './websites/dealabs.js';
-import fs from 'fs'; // Pour l'écriture de fichier
-
-async function scrapeDealabs(url = 'https://www.dealabs.com/groupe/lego') {
-  try {
-    console.log(`🕵️‍♀️  Browsing Dealabs: ${url}`);
-
-    const deals = await dealabs.scrape(url);
-
-    console.log(`✅ Found ${deals.length} deals.`);
-
-    // Étape : Stocker la liste dans un fichier JSON
-    fs.writeFileSync('deals.json', JSON.stringify(deals, null, 2));
-    console.log('💾 Data saved to deals.json');
-
-    process.exit(0);
-  } catch (e) {
-    console.error('❌ Error:', e);
-    process.exit(1);
-  }
-}
-
-
 const [,, param] = process.argv;
 
-//scrapeADLB(param);
-//scrapeVinted(param)
+// scrapeADLB(param);
+// scrapeVinted(param);
 scrapeDealabs(param);
