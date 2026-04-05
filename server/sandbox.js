@@ -31,7 +31,7 @@ async function scrapeDealabs (url = 'https://www.dealabs.com/groupe/lego') {
     
     fs.writeFileSync(filePath, JSON.stringify(deals, null, 2));
 
-    console.log(`💾 Fichier sauvegardé avec succès dans : ${filePath}`);
+    console.log(`Fichier sauvegardé avec succès dans : ${filePath}`);
     console.log('done');
     process.exit(0);
   } catch (e) {
