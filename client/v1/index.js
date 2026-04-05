@@ -30,7 +30,10 @@ console.log(MY_FAVORITE_DEALERS[0]);
 // 1. Create a new variable and assign it the link of the lego set with the highest reduction I can find on these 2 websites
 const highestReductionLegoLink = 'https://www.dealabs.com/bons-plans/lego-les-indestructibles-sur-nintendo-switch-12-dematerialise-3267939';
 // 2. Log the variable
+<<<<<<< HEAD
 console.log('Link to the highest reduction found:', highestReductionLegoLink);
+=======
+>>>>>>> c5efc04314f9ca37b8907d5c9138a9f402f513c9
 console.log('TODO 1');
 console.log('Link to the highest reduction found:', highestReductionLegoLink);
 
@@ -49,8 +52,11 @@ const totalDeals = deals.length;
 // 2. Log the variable
 console.log('TODO 2');
 console.log('Total number of deals:', totalDeals);
+<<<<<<< HEAD
 console.log('TODO 2');
 console.log('Total number of deals:', totalDeals);
+=======
+>>>>>>> c5efc04314f9ca37b8907d5c9138a9f402f513c9
 
 // 🎯 TODO 3: Website name
 // 1. Create a variable and assign it the list of shopping community name only
@@ -574,18 +580,24 @@ console.log('TODO 15');
 console.log('sealedCamera:', sealedCamera);
 console.log('camera:', camera);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c5efc04314f9ca37b8907d5c9138a9f402f513c9
 // 2. What do you notice?
 // Answer: You will see that BOTH objects have 'favorite: true'.
 // Why? Because in JavaScript, objects are passed by reference, not by value.
 // When you wrote 'let camera = sealedCamera', you didn't create a copy.
 // You just created a new name pointing to the exact same object in memory.
 // Modifying one modifies the other.
+<<<<<<< HEAD
 // Answer: You will see that BOTH objects have 'favorite: true'.
 // Why? Because in JavaScript, objects are passed by reference, not by value.
 // When you wrote 'let camera = sealedCamera', you didn't create a copy.
 // You just created a new name pointing to the exact same object in memory.
 // Modifying one modifies the other.
+=======
+>>>>>>> c5efc04314f9ca37b8907d5c9138a9f402f513c9
 
 // we make (again) a new assignment again
 sealedCamera = {
@@ -610,7 +622,10 @@ console.log('camera:', camera.favorite);
 // From a specific deal called `deal`
 const deal = {
   'title': 'La caméra Hommage à Walt Disney',
+<<<<<<< HEAD
   'title': 'La caméra Hommage à Walt Disney',
+=======
+>>>>>>> c5efc04314f9ca37b8907d5c9138a9f402f513c9
   'retail': 75.98,
   'price': 56.98,
   'legoId': '43230'
