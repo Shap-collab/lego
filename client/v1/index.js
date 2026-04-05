@@ -70,11 +70,7 @@ console.log(communityNames.length);
 const sortByPrice = (data) => {
   return [...data].sort((a, b) => a.price - b.price);
 };
-const sortByPrice = (data) => {
-  return [...data].sort((a, b) => a.price - b.price);
-};
 // 2. Create a variable and assign it the list of sets by price from lowest to highest
-const sortedDealsByPrice = sortByPrice(deals);
 const sortedDealsByPrice = sortByPrice(deals);
 // 3. Log the variable
 console.log('TODO 4');
@@ -553,19 +549,6 @@ for (let i = 0; i < VINTED.length; i++) {
 if (indexToDelete !== -1) {
   VINTED.splice(indexToDelete, 1);
 }
-console.log('TODO 14');
-const targetUuidToDelete = 'f2c5377c-84f9-571d-8712-98902dcbb913';
-let indexToDelete = -1;
-for (let i = 0; i < VINTED.length; i++) {
-  if (VINTED[i].uuid === targetUuidToDelete) {
-    indexToDelete = i;
-    console.log(VINTED[indexToDelete]);
-    break;
-  }
-}
-if (indexToDelete !== -1) {
-  VINTED.splice(indexToDelete, 1);
-}
 // 2. Log the new list of items
 console.log('This item has been deleted. Remaining items:', VINTED.length);
 console.log(VINTED);
@@ -591,9 +574,6 @@ console.log('TODO 15');
 console.log('sealedCamera:', sealedCamera);
 console.log('camera:', camera);
 
-console.log('TODO 15');
-console.log('sealedCamera:', sealedCamera);
-console.log('camera:', camera);
 
 // 2. What do you notice?
 // Answer: You will see that BOTH objects have 'favorite: true'.
@@ -635,16 +615,7 @@ const deal = {
   'price': 56.98,
   'legoId': '43230'
 };
-};
 // 1. Compute the potential highest profitability based on the VINTED items
-let maxVintedPrice = 0;
-for (const item of VINTED) {
-  const currentPrice = Number(item.price);
-  if (currentPrice > maxVintedPrice) {
-    maxVintedPrice = currentPrice;
-  }
-}
-const profit = maxVintedPrice - deal.price;
 let maxVintedPrice = 0;
 for (const item of VINTED) {
   const currentPrice = Number(item.price);
