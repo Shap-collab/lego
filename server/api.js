@@ -3,12 +3,10 @@ import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 
-// We load json files as data source
 import DEALS from "./sources/deals.json" with { type: "json" };
 import SALES from "./sources/vinted.json" with { type: "json" };
 
 const PORT = 8092;
-
 const app = express();
 
 app.use(bodyParser.json());
@@ -19,10 +17,12 @@ app.get('/', (request, response) => {
   response.send({ 'ack': true });
 });
 
-// GET /deals/search?limit=12&price=10&date=best-discount
+// GET /deals/search?page=1&size=6&price=10&date=best-discount
 app.get('/deals/search', (request, response) => {
   try {
-    const { limit = 12, price, date } = request.query;
+    const { page = 1, size = 6, price, date } = request.query;
+    const pageNum = parseInt(page);
+    const sizeNum = parseInt(size);
 
     let result = [...DEALS];
 
@@ -31,7 +31,7 @@ app.get('/deals/search', (request, response) => {
       result = result.filter(deal => deal.price <= parseFloat(price));
     }
 
-    // Sort by date or discount
+    // Sort
     if (date === 'best-discount') {
       result = result.sort((a, b) => b.discount - a.discount);
     } else if (date === 'most-commented') {
@@ -39,21 +39,26 @@ app.get('/deals/search', (request, response) => {
     } else if (date === 'hot-deals') {
       result = result.sort((a, b) => b.temperature - a.temperature);
     } else {
-      // Default: sort by most recent
       result = result.sort((a, b) => b.published - a.published);
     }
 
-    // Apply limit
-    result = result.slice(0, parseInt(limit));
+    const total = result.length;
+    const pageCount = Math.ceil(total / sizeNum);
+    const currentPage = Math.min(pageNum, pageCount) || 1;
+
+    // Paginate
+    const start = (currentPage - 1) * sizeNum;
+    const paginated = result.slice(start, start + sizeNum);
 
     return response.status(200).json({
       'success': true,
       'data': {
-        'result': result,
+        'result': paginated,
         'meta': {
-          'count': result.length,
-          'total': DEALS.length,
-          'limit': parseInt(limit)
+          'count': total,
+          'currentPage': currentPage,
+          'pageCount': pageCount,
+          'limit': sizeNum
         }
       }
     });
@@ -114,13 +119,12 @@ app.get('/sales/search', (request, response) => {
 
     const result = SALES[legoSetId] || [];
 
-    // Compute stats if results exist
     const prices = result.map(s => parseFloat(s.price.amount));
     const avg = prices.length
       ? (prices.reduce((a, b) => a + b, 0) / prices.length).toFixed(2)
       : null;
     const p5 = prices.length
-      ? prices.sort((a, b) => a - b)[Math.floor(prices.length * 0.05)]
+      ? [...prices].sort((a, b) => a - b)[Math.floor(prices.length * 0.05)]
       : null;
 
     return response.status(200).json({
