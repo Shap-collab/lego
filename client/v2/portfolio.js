@@ -1,9 +1,13 @@
 'use strict';
 
-// ─── Config ───────────────────────────────────────────────────────────────────
 const API_URL = 'https://legooo-nu.vercel.app';
-// Rebrickable image: free, no API key needed for thumbnails
 const LEGO_IMG = (id) => `https://images.brickset.com/sets/images/${id}-1.jpg`;
+
+const VINTED_IDS = [
+  '10343','10348','11384','31150','31162','31163','31165','31175','31218',
+  '40747','40885','42179','43020','43221','43257','43268','43271','43272',
+  '60444','71814','71858','75687','76281','77240','77251','77255'
+];
 
 // ─── State ────────────────────────────────────────────────────────────────────
 let currentDeals = [];
@@ -26,16 +30,16 @@ const legoSection      = document.querySelector('#lego');
 // ─── Style ────────────────────────────────────────────────────────────────────
 const styleSheet = document.createElement('style');
 styleSheet.innerText = `
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #050510;
-    color: #f0f0ff;
+    font-family: 'Space Grotesk', -apple-system, sans-serif;
+    background: #06060f;
+    color: #e8e8f8;
     min-height: 100vh;
-    padding: 40px 24px;
-    max-width: 1100px;
+    padding: 40px 28px;
+    max-width: 1140px;
     margin: 0 auto;
   }
 
@@ -43,214 +47,193 @@ styleSheet.innerText = `
     content: '';
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
     background:
-      radial-gradient(ellipse at 70% 10%, rgba(120,60,255,0.18) 0%, transparent 55%),
-      radial-gradient(ellipse at 10% 90%, rgba(0,180,255,0.12) 0%, transparent 55%);
+      radial-gradient(ellipse at 75% 5%, rgba(110,50,255,0.22) 0%, transparent 50%),
+      radial-gradient(ellipse at 5% 95%, rgba(0,160,255,0.14) 0%, transparent 50%);
     pointer-events: none; z-index: 0;
   }
 
   h1 {
-    font-size: 3rem; font-weight: 700; letter-spacing: -0.04em;
-    background: linear-gradient(120deg, #fff 0%, #b0a0ff 40%, #00d4ff 100%);
+    font-size: 3.2rem; font-weight: 700; letter-spacing: -0.05em;
+    background: linear-gradient(120deg, #ffffff 0%, #c0b0ff 45%, #00e0ff 100%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    margin-bottom: 36px; position: relative; z-index: 1;
+    margin-bottom: 32px; position: relative; z-index: 1;
   }
 
   section {
     position: relative; z-index: 1;
     background: rgba(255,255,255,0.03);
     border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 20px; padding: 22px 24px; margin-bottom: 16px;
-    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-radius: 18px; padding: 20px 22px; margin-bottom: 14px;
+    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
     transition: border-color 0.3s;
+    overflow: hidden;
   }
-  section:hover { border-color: rgba(255,255,255,0.12); }
+  section:hover { border-color: rgba(255,255,255,0.13); }
 
   section h2 {
-    font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em;
-    text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px;
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 16px;
+    font-family: 'Space Grotesk', sans-serif;
   }
 
-  /* ── Top controls ── */
-  #options {
-    display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
-  }
+  /* ── Controls ── */
+  #options { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
   #options > div { display: flex; align-items: center; gap: 8px; }
 
-  label { font-size: 0.78rem; font-weight: 500; color: rgba(255,255,255,0.45); }
+  label {
+    font-size: 0.78rem; font-weight: 500;
+    color: rgba(255,255,255,0.4);
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: 0.02em;
+  }
 
   select {
     background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 10px; color: #f0f0ff; font-family: inherit; font-size: 0.83rem;
-    padding: 7px 32px 7px 12px; cursor: pointer; outline: none; transition: all 0.2s;
+    border-radius: 10px; color: #e8e8f8; font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.82rem; font-weight: 500;
+    padding: 7px 30px 7px 12px; cursor: pointer; outline: none; transition: all 0.2s;
     -webkit-appearance: none; appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(255,255,255,0.35)'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: right 11px center;
+    background-repeat: no-repeat; background-position: right 10px center;
   }
-  select:focus { border-color: rgba(120,80,255,0.7); box-shadow: 0 0 0 3px rgba(120,80,255,0.15); }
-  select option { background: #12122a; color: #f0f0ff; }
+  select:focus { border-color: rgba(110,60,255,0.7); box-shadow: 0 0 0 3px rgba(110,60,255,0.15); }
+  select option { background: #13132a; color: #e8e8f8; }
 
   #filters { display: flex; flex-wrap: wrap; gap: 8px; }
   #filters span {
-    padding: 7px 16px; background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.09); border-radius: 100px;
-    cursor: pointer; font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.6);
-    transition: all 0.22s; user-select: none;
+    padding: 7px 16px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 100px;
+    cursor: pointer; font-size: 0.79rem; font-weight: 500;
+    color: rgba(255,255,255,0.55); transition: all 0.22s; user-select: none;
+    font-family: 'Space Grotesk', sans-serif; letter-spacing: 0.01em;
   }
-  #filters span:hover { background: rgba(255,255,255,0.09); color: #fff; }
+  #filters span:hover { background: rgba(255,255,255,0.08); color: #fff; }
   #filters span.active {
-    background: linear-gradient(135deg, #6644ff, #00c8ff);
+    background: linear-gradient(135deg, #6040ff, #00ccff);
     border-color: transparent; color: #fff;
-    box-shadow: 0 4px 18px rgba(100,60,255,0.45);
+    box-shadow: 0 4px 20px rgba(100,60,255,0.4);
   }
 
-  /* ── Layout: 2 columns ── */
+  /* ── Grid layout ── */
   #main-grid {
     display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 16px;
+    grid-template-columns: 1fr 310px;
+    gap: 14px;
     position: relative; z-index: 1;
+    align-items: start;
   }
-  #left-col { display: flex; flex-direction: column; gap: 16px; }
-  #right-col { display: flex; flex-direction: column; gap: 16px; }
-
-  @media (max-width: 768px) {
-    #main-grid { grid-template-columns: 1fr; }
-  }
+  #left-col, #right-col { display: flex; flex-direction: column; gap: 14px; }
+  @media (max-width: 760px) { #main-grid { grid-template-columns: 1fr; } }
 
   /* ── Deal cards ── */
   .deal {
     display: flex; align-items: center; gap: 12px;
-    padding: 12px 8px; border-bottom: 1px solid rgba(255,255,255,0.04);
-    transition: background 0.18s; border-radius: 10px; margin-bottom: 2px;
+    padding: 11px 6px; border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.18s; border-radius: 10px;
   }
   .deal:last-child { border-bottom: none; }
   .deal:hover { background: rgba(255,255,255,0.04); }
 
   .deal-img {
-    width: 52px; height: 40px; object-fit: contain; border-radius: 6px;
-    background: rgba(255,255,255,0.05); flex-shrink: 0;
+    width: 54px; height: 40px; object-fit: contain; border-radius: 7px;
+    background: rgba(255,255,255,0.04); flex-shrink: 0;
   }
 
   .fav-btn {
-    background: none; border: none; font-size: 1rem; cursor: pointer;
-    padding: 0; line-height: 1; opacity: 0.35; transition: all 0.2s; flex-shrink: 0;
+    background: none; border: none; cursor: pointer; padding: 0;
+    line-height: 1; flex-shrink: 0; font-size: 0; /* hide emoji */
+    width: 22px; height: 22px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.22s;
+    position: relative;
   }
-  .fav-btn:hover { opacity: 1; transform: scale(1.25); }
-  .fav-btn.active { opacity: 1; }
+  /* Custom heart icon using CSS */
+  .fav-btn::before {
+    content: '♡';
+    font-size: 1rem;
+    color: rgba(255,255,255,0.25);
+    transition: all 0.22s;
+    font-style: normal;
+  }
+  .fav-btn:hover::before { color: #ff6090; transform: scale(1.2); }
+  .fav-btn.active::before {
+    content: '♥';
+    color: #ff4080;
+    text-shadow: 0 0 12px rgba(255,60,120,0.6);
+  }
 
-  .deal-id { font-size: 0.7rem; font-weight: 600; color: rgba(255,255,255,0.28); min-width: 46px; }
+  .deal-id {
+    font-size: 0.68rem; font-weight: 600;
+    color: rgba(255,255,255,0.25); min-width: 44px;
+    font-variant-numeric: tabular-nums;
+  }
 
   .deal a {
-    color: rgba(255,255,255,0.82); text-decoration: none; flex: 1;
-    font-size: 0.84rem; line-height: 1.4; transition: color 0.2s;
+    color: rgba(255,255,255,0.8); text-decoration: none; flex: 1;
+    font-size: 0.83rem; line-height: 1.4; font-weight: 400;
+    transition: color 0.2s;
   }
-  .deal a:hover { color: #00d4ff; }
+  .deal a:hover { color: #00e0ff; }
 
-  .deal-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
-  .deal-price { font-size: 0.9rem; font-weight: 700; color: #00d4ff; font-variant-numeric: tabular-nums; }
+  .deal-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; min-width: 68px; }
+
+  .deal-price {
+    font-size: 0.92rem; font-weight: 700; color: #00e0ff;
+    font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+  }
+
   .deal-badge {
-    font-size: 0.66rem; font-weight: 700; padding: 2px 7px; border-radius: 100px;
-    background: rgba(255,80,80,0.15); color: #ff7070; border: 1px solid rgba(255,80,80,0.25);
+    font-size: 0.65rem; font-weight: 700; padding: 2px 7px; border-radius: 100px;
+    background: rgba(255,70,70,0.15); color: #ff7575;
+    border: 1px solid rgba(255,70,70,0.2);
   }
 
   /* ── Indicators ── */
   .indicator-row {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 11px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.86rem;
+    padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.83rem;
   }
   .indicator-row:last-child { border-bottom: none; }
-  .indicator-row span:first-child { color: rgba(255,255,255,0.45); }
-  .indicator-row span:last-child { font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; }
+  .indicator-row .ind-label { color: rgba(255,255,255,0.42); font-weight: 400; }
+  .indicator-row .ind-value { font-weight: 700; color: #e8e8f8; font-variant-numeric: tabular-nums; }
 
   /* ── Lego set selector ── */
-  #lego { padding-bottom: 16px; }
-  #lego > div { display: flex; align-items: center; gap: 10px; margin-bottom: 0; }
+  #lego-set-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
 
-  /* ── Sales list ── */
+  /* ── Sales list — stays INSIDE the lego section ── */
+  #sales-list { margin-top: 4px; }
+  #sales-list h2 { margin-bottom: 12px; }
+
   .sale {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 10px 8px; border-bottom: 1px solid rgba(255,255,255,0.04);
+    padding: 9px 6px; border-bottom: 1px solid rgba(255,255,255,0.04);
     border-radius: 8px; transition: background 0.18s;
   }
   .sale:hover { background: rgba(255,255,255,0.04); }
   .sale:last-child { border-bottom: none; }
-  .sale a { color: rgba(255,255,255,0.75); text-decoration: none; flex: 1; font-size: 0.82rem; transition: color 0.2s; }
-  .sale a:hover { color: #b0a0ff; }
-  .sale-price { font-weight: 700; color: #b0a0ff; min-width: 58px; text-align: right; font-size: 0.86rem; }
+  .sale a {
+    color: rgba(255,255,255,0.72); text-decoration: none; flex: 1;
+    font-size: 0.8rem; transition: color 0.2s; padding-right: 8px; line-height: 1.35;
+  }
+  .sale a:hover { color: #c0b0ff; }
+  .sale-price {
+    font-weight: 700; color: #c0b0ff; min-width: 58px;
+    text-align: right; font-size: 0.84rem; flex-shrink: 0;
+  }
 
-  #no-results { color: rgba(255,255,255,0.28); font-style: italic; font-size: 0.85rem; padding: 20px 0; text-align: center; }
+  #no-results {
+    color: rgba(255,255,255,0.25); font-style: italic; font-size: 0.83rem;
+    padding: 18px 0; text-align: center;
+  }
 
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
 `;
 document.head.appendChild(styleSheet);
-
-// ─── Restructure the DOM ──────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', async () => {
-  // Wrap lego + indicators + sales into a grid
-  const mainGrid = document.createElement('div');
-  mainGrid.id = 'main-grid';
-
-  const leftCol = document.createElement('div');
-  leftCol.id = 'left-col';
-
-  const rightCol = document.createElement('div');
-  rightCol.id = 'right-col';
-
-  const body = document.body;
-
-  // Move sections into columns
-  const optionsSection = document.querySelector('#options').parentElement;
-  const legoSec = document.querySelector('#lego');
-  const indicatorsSec = document.querySelector('#indicators');
-  const dealsSec = document.querySelector('#deals');
-
-  leftCol.appendChild(dealsSec);
-  rightCol.appendChild(legoSec);
-  rightCol.appendChild(indicatorsSec);
-
-  mainGrid.appendChild(leftCol);
-  mainGrid.appendChild(rightCol);
-  body.appendChild(mainGrid);
-
-  // Add "By favorites" filter
-  const favSpan = document.createElement('span');
-  favSpan.textContent = 'By favorites';
-  filtersDiv.appendChild(favSpan);
-
-  // Attach all filter listeners
-  filtersDiv.querySelectorAll('span').forEach(span => {
-    span.addEventListener('click', () => {
-      span.classList.toggle('active');
-      const text = span.textContent.toLowerCase();
-      if (text.includes('discount'))  activeFilters.discount  = !activeFilters.discount;
-      if (text.includes('commented')) activeFilters.commented = !activeFilters.commented;
-      if (text.includes('hot'))       activeFilters.hot       = !activeFilters.hot;
-      if (text.includes('favorites')) activeFilters.favorites = !activeFilters.favorites;
-      applyFiltersAndSort();
-    });
-  });
-
-  selectSort.addEventListener('change', (e) => { currentSort = e.target.value; applyFiltersAndSort(); });
-  selectShow.addEventListener('change', async (e) => {
-    const data = await fetchDeals(currentPagination.currentPage || 1, parseInt(e.target.value));
-    setCurrentDeals(data); render(currentDeals, currentPagination);
-  });
-  selectPage.addEventListener('change', async (e) => {
-    const data = await fetchDeals(parseInt(e.target.value), parseInt(selectShow.value));
-    setCurrentDeals(data); render(currentDeals, currentPagination);
-  });
-  selectLegoSetIds.addEventListener('change', (e) => updateSales(e.target.value));
-
-  // Populate vinted IDs selector with ALL vinted keys fetched from API
-  await populateVintedIds();
-
-  // Load deals
-  const data = await fetchDeals();
-  setCurrentDeals(data);
-  render(currentDeals, currentPagination);
-});
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const extractPrice = (p) => {
@@ -259,17 +242,13 @@ const extractPrice = (p) => {
   if (typeof p === 'object' && p !== null) return parseFloat(p.amount || p.value || 0);
   return 0;
 };
-
 const getPercentile = (arr, p) => {
   if (!arr.length) return 0;
   const s = [...arr].sort((a, b) => a - b);
-  const i = (s.length - 1) * p;
-  const lo = Math.floor(i), hi = lo + 1, w = i % 1;
+  const i = (s.length - 1) * p, lo = Math.floor(i), hi = lo + 1, w = i % 1;
   return hi >= s.length ? s[lo] : s[lo] * (1 - w) + s[hi] * w;
 };
-
 const getAverage = arr => arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
-
 const getLifetime = dates => {
   if (dates.length < 2) return 0;
   const times = dates.map(d => typeof d === 'number' ? d * 1000 : new Date(d).getTime());
@@ -294,28 +273,38 @@ const fetchSales = async (id) => {
   } catch { return []; }
 };
 
-// Fetch all vinted set IDs by trying known IDs from vinted.json
-// We expose a /sales/ids endpoint — fallback: hardcode the 27 known IDs
-const VINTED_IDS = [
-  '10343','10348','11384','31150','31162','31163','31165','31175','31218',
-  '40747','40885','42179','43020','43221','43257','43268','43271','43272',
-  '60444','71814','71858','75687','76281','77240','77251','77255'
-];
-
-const populateVintedIds = async () => {
-  selectLegoSetIds.innerHTML = VINTED_IDS.map(id =>
-    `<option value="${id}">${id}</option>`
-  ).join('');
-  // Trigger sales for first ID
-  if (VINTED_IDS.length > 0) {
-    await updateSales(VINTED_IDS[0]);
-  }
-};
-
 // ─── State Setter ─────────────────────────────────────────────────────────────
 const setCurrentDeals = ({ result, meta }) => {
   currentDeals = result;
   currentPagination = meta;
+};
+
+// ─── Build indicators section ─────────────────────────────────────────────────
+const buildIndicators = () => {
+  const h2 = indicatorsDiv.querySelector('h2');
+  indicatorsDiv.innerHTML = '';
+  if (h2) indicatorsDiv.appendChild(h2);
+
+  const rows = [
+    { label: 'Number of deals',    id: 'ind-nb-deals',    value: '0' },
+    { label: 'Number of sales',    id: 'ind-nb-sales',    value: '0' },
+    { label: 'Average price',      id: 'ind-avg',         value: '—' },
+    { label: 'p5 price',           id: 'ind-p5',          value: '—' },
+    { label: 'p25 price',          id: 'ind-p25',         value: '—' },
+    { label: 'p50 price',          id: 'ind-p50',         value: '—' },
+    { label: 'Lifetime',           id: 'ind-lifetime',    value: '—' },
+  ];
+  rows.forEach(({ label, id, value }) => {
+    const row = document.createElement('div');
+    row.className = 'indicator-row';
+    row.innerHTML = `<span class="ind-label">${label}</span><span class="ind-value" id="${id}">${value}</span>`;
+    indicatorsDiv.appendChild(row);
+  });
+};
+
+const setIndicator = (id, value) => {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
 };
 
 // ─── Renderers ────────────────────────────────────────────────────────────────
@@ -328,13 +317,12 @@ const renderDeals = (deals) => {
   div.innerHTML = deals.map(deal => {
     const isFav = favorites.includes(deal.uuid);
     const badge = deal.discount > 0 ? `<span class="deal-badge">-${deal.discount}%</span>` : '';
-    const imgSrc = deal.id ? LEGO_IMG(deal.id) : '';
-    const imgTag = imgSrc
-      ? `<img class="deal-img" src="${imgSrc}" alt="${deal.id}" onerror="this.style.display='none'">`
-      : '<div class="deal-img"></div>';
+    const imgTag = deal.id
+      ? `<img class="deal-img" src="${LEGO_IMG(deal.id)}" alt="" onerror="this.style.opacity='0'">`
+      : `<div class="deal-img"></div>`;
     return `
       <div class="deal" id="${deal.uuid}">
-        <button class="fav-btn ${isFav ? 'active' : ''}" data-uuid="${deal.uuid}">${isFav ? '⭐' : '☆'}</button>
+        <button class="fav-btn ${isFav ? 'active' : ''}" data-uuid="${deal.uuid}"></button>
         ${imgTag}
         <span class="deal-id">${deal.id || '—'}</span>
         <a href="${deal.link}" target="_blank" rel="noopener noreferrer">${deal.title}</a>
@@ -347,7 +335,14 @@ const renderDeals = (deals) => {
 
   const frag = document.createDocumentFragment();
   frag.appendChild(div);
-  sectionDeals.innerHTML = `<h2>Deals — ${deals.length} results</h2>`;
+  const h2 = sectionDeals.querySelector('h2');
+  sectionDeals.innerHTML = '';
+  if (h2) { h2.textContent = `Deals — ${deals.length} results`; sectionDeals.appendChild(h2); }
+  else {
+    const newH2 = document.createElement('h2');
+    newH2.textContent = `Deals — ${deals.length} results`;
+    sectionDeals.appendChild(newH2);
+  }
   sectionDeals.appendChild(frag);
 
   document.querySelectorAll('.fav-btn').forEach(btn => {
@@ -370,14 +365,6 @@ const renderPagination = ({ currentPage, pageCount }) => {
   selectPage.selectedIndex = (currentPage || 1) - 1;
 };
 
-const renderIndicators = ({ count }) => { spanNbDeals.innerHTML = count || 0; };
-
-const render = (deals, pagination) => {
-  applyFiltersAndSort();
-  renderPagination(pagination);
-  renderIndicators(pagination);
-};
-
 // ─── Filters & Sort ───────────────────────────────────────────────────────────
 const applyFiltersAndSort = () => {
   let result = [...currentDeals];
@@ -396,80 +383,123 @@ const applyFiltersAndSort = () => {
 const updateSales = async (id) => {
   const sales = await fetchSales(id);
 
-  // Build indicator rows map from DOM
-  const getIndicatorSpan = (label) => {
-    const rows = indicatorsDiv.querySelectorAll('.indicator-row');
-    const row = Array.from(rows).find(r => r.textContent.toLowerCase().includes(label.toLowerCase()));
-    return row ? row.querySelectorAll('span')[1] : null;
-  };
-
-  // Rebuild indicators section with proper structure if needed
-  if (!indicatorsDiv.querySelector('.indicator-row')) {
-    const labels = [
-      ['Number of deals', spanNbDeals ? spanNbDeals.textContent : '0'],
-      ['Number of sales', '0'],
-      ['Average sales price', '0 €'],
-      ['p5 sales price value', '0 €'],
-      ['p25 sales price value', '0 €'],
-      ['p50 sales price value', '0 €'],
-      ['Lifetime value', '0 days'],
-    ];
-    const existingH2 = indicatorsDiv.querySelector('h2');
-    indicatorsDiv.innerHTML = '';
-    if (existingH2) indicatorsDiv.appendChild(existingH2);
-    labels.forEach(([label, val]) => {
-      const row = document.createElement('div');
-      row.className = 'indicator-row';
-      row.innerHTML = `<span>${label}</span><span>${val}</span>`;
-      indicatorsDiv.appendChild(row);
-    });
-    // restore nbDeals binding
-    const nbDealsRow = Array.from(indicatorsDiv.querySelectorAll('.indicator-row'))
-      .find(r => r.textContent.includes('Number of deals'));
-    if (nbDealsRow) nbDealsRow.querySelectorAll('span')[1].id = 'nbDeals';
+  // Get or create #sales-list INSIDE legoSection
+  let salesListDiv = legoSection.querySelector('#sales-list');
+  if (!salesListDiv) {
+    salesListDiv = document.createElement('div');
+    salesListDiv.id = 'sales-list';
+    legoSection.appendChild(salesListDiv);
   }
 
-  const nbSalesSpan  = getIndicatorSpan('Number of sales');
-  const avgSpan      = getIndicatorSpan('Average');
-  const p5Span       = getIndicatorSpan('p5');
-  const p25Span      = getIndicatorSpan('p25');
-  const p50Span      = getIndicatorSpan('p50');
-  const lifetimeSpan = getIndicatorSpan('Lifetime');
-
   if (!sales.length) {
-    if (nbSalesSpan)  nbSalesSpan.textContent  = '0';
-    if (avgSpan)      avgSpan.textContent       = '0 €';
-    if (p5Span)       p5Span.textContent        = '0 €';
-    if (p25Span)      p25Span.textContent       = '0 €';
-    if (p50Span)      p50Span.textContent       = '0 €';
-    if (lifetimeSpan) lifetimeSpan.textContent  = '0 days';
-    const old = document.querySelector('#sales-list');
-    if (old) old.innerHTML = '<p id="no-results">No Vinted sales found for this set.</p>';
+    setIndicator('ind-nb-sales', '0');
+    setIndicator('ind-avg', '—');
+    setIndicator('ind-p5', '—');
+    setIndicator('ind-p25', '—');
+    setIndicator('ind-p50', '—');
+    setIndicator('ind-lifetime', '—');
+    salesListDiv.innerHTML = '<p id="no-results">No Vinted sales found.</p>';
     return;
   }
 
   const prices = sales.map(s => extractPrice(s.price)).filter(p => !isNaN(p) && p > 0);
   const dates  = sales.map(s => s.published);
 
-  if (nbSalesSpan)  nbSalesSpan.textContent  = sales.length;
-  if (avgSpan)      avgSpan.textContent       = `${getAverage(prices).toFixed(2)} €`;
-  if (p5Span)       p5Span.textContent        = `${getPercentile(prices, 0.05).toFixed(2)} €`;
-  if (p25Span)      p25Span.textContent       = `${getPercentile(prices, 0.25).toFixed(2)} €`;
-  if (p50Span)      p50Span.textContent       = `${getPercentile(prices, 0.50).toFixed(2)} €`;
-  if (lifetimeSpan) lifetimeSpan.textContent  = `${getLifetime(dates)} days`;
+  setIndicator('ind-nb-sales', sales.length);
+  setIndicator('ind-avg',      `${getAverage(prices).toFixed(2)} €`);
+  setIndicator('ind-p5',       `${getPercentile(prices, 0.05).toFixed(2)} €`);
+  setIndicator('ind-p25',      `${getPercentile(prices, 0.25).toFixed(2)} €`);
+  setIndicator('ind-p50',      `${getPercentile(prices, 0.50).toFixed(2)} €`);
+  setIndicator('ind-lifetime', `${getLifetime(dates)} days`);
 
-  let salesListDiv = document.querySelector('#sales-list');
-  if (!salesListDiv) {
-    salesListDiv = document.createElement('div');
-    salesListDiv.id = 'sales-list';
-    // Insert INSIDE the lego section
-    legoSection.appendChild(salesListDiv);
-  }
-
-  salesListDiv.innerHTML = `<h2 style="margin-top:16px;">Vinted Sales (${sales.length})</h2>` +
+  salesListDiv.innerHTML =
+    `<h2>Vinted Sales (${sales.length})</h2>` +
     sales.slice(0, 10).map(sale => `
       <div class="sale">
         <a href="${sale.link}" target="_blank" rel="noopener noreferrer">${sale.title}</a>
         <span class="sale-price">${extractPrice(sale.price).toFixed(2)} €</span>
       </div>`).join('');
 };
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+
+  // 1. Restructure DOM into 2-column grid
+  const mainGrid = document.createElement('div');
+  mainGrid.id = 'main-grid';
+  const leftCol = document.createElement('div');
+  leftCol.id = 'left-col';
+  const rightCol = document.createElement('div');
+  rightCol.id = 'right-col';
+
+  leftCol.appendChild(sectionDeals);
+  rightCol.appendChild(legoSection);
+  rightCol.appendChild(indicatorsDiv);
+  mainGrid.appendChild(leftCol);
+  mainGrid.appendChild(rightCol);
+  document.body.appendChild(mainGrid);
+
+  // 2. Wrap lego set select in a labelled row
+  legoSection.innerHTML = '<h2>Lego Sets</h2>';
+  const legoRow = document.createElement('div');
+  legoRow.id = 'lego-set-row';
+  legoRow.innerHTML = `<label>Lego set id:</label>`;
+  legoRow.appendChild(selectLegoSetIds);
+  legoSection.appendChild(legoRow);
+
+  // 3. Build clean indicators
+  buildIndicators();
+
+  // 4. Add "By favorites" filter pill
+  const favSpan = document.createElement('span');
+  favSpan.textContent = 'By favorites';
+  filtersDiv.appendChild(favSpan);
+
+  // 5. Attach events
+  filtersDiv.querySelectorAll('span').forEach(span => {
+    span.addEventListener('click', () => {
+      span.classList.toggle('active');
+      const t = span.textContent.toLowerCase();
+      if (t.includes('discount'))  activeFilters.discount  = !activeFilters.discount;
+      if (t.includes('commented')) activeFilters.commented = !activeFilters.commented;
+      if (t.includes('hot'))       activeFilters.hot       = !activeFilters.hot;
+      if (t.includes('favorites')) activeFilters.favorites = !activeFilters.favorites;
+      applyFiltersAndSort();
+    });
+  });
+
+  selectSort.addEventListener('change', (e) => { currentSort = e.target.value; applyFiltersAndSort(); });
+
+  selectShow.addEventListener('change', async (e) => {
+    const data = await fetchDeals(currentPagination.currentPage || 1, parseInt(e.target.value));
+    setCurrentDeals(data);
+    setIndicator('ind-nb-deals', data.meta.count || 0);
+    renderPagination(data.meta);
+    applyFiltersAndSort();
+  });
+
+  selectPage.addEventListener('change', async (e) => {
+    const data = await fetchDeals(parseInt(e.target.value), parseInt(selectShow.value));
+    setCurrentDeals(data);
+    setIndicator('ind-nb-deals', data.meta.count || 0);
+    renderPagination(data.meta);
+    applyFiltersAndSort();
+  });
+
+  selectLegoSetIds.addEventListener('change', (e) => updateSales(e.target.value));
+
+  // 6. Populate vinted IDs
+  selectLegoSetIds.innerHTML = VINTED_IDS.map(id =>
+    `<option value="${id}">${id}</option>`
+  ).join('');
+
+  // 7. Load deals
+  const data = await fetchDeals();
+  setCurrentDeals(data);
+  setIndicator('ind-nb-deals', data.meta.count || 0);
+  renderPagination(data.meta);
+  applyFiltersAndSort();
+
+  // 8. Auto-load sales for first vinted ID
+  await updateSales(VINTED_IDS[0]);
+});
